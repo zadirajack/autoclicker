@@ -16,13 +16,13 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up Xcode
-        uses: actions/setup-xcode@v3
+        uses: apple-actions/setup-xcode@v2
         with:
           xcode-version: '15.0'  # Укажите нужную версию Xcode
 
       - name: Build and Archive
         run: |
-          xcodebuild -workspace AutoClicker.xcworkspace -scheme AutoClickerScheme -sdk iphoneos -configuration Release archive -archivePath ${{ github.workspace }}/build/AutoClicker.xcarchive
+          xcodebuild -project AutoClicker.xcodeproj -scheme AutoClickerScheme -sdk iphoneos -configuration Release archive -archivePath ${{ github.workspace }}/build/AutoClicker.xcarchive
 
       - name: Export .ipa file
         run: |
