@@ -39,3 +39,11 @@ struct ScheduleView: View {
         UNUserNotificationCenter.current().add(request)
     }
 }
+
+UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
+    if granted {
+        print("Notification permission granted.")
+    } else {
+        print("Notification permission denied.")
+    }
+}
