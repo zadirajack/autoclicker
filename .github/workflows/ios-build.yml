@@ -1,0 +1,33 @@
+name: Build and Test iOS App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Xcode
+        uses: apple-actions/setup-xcode@v2
+        with:
+          xcode-version: '15.0'  # Замените на версию Xcode, используемую в вашем проекте
+
+      - name: Install Dependencies
+        run: |
+          xcodebuild -workspace MyApp.xcworkspace -scheme MyAppScheme -sdk iphoneos -configuration Release
+
+      - name: Build and Archive
+        run: |
+          xcodebuild -workspace MyApp.xcworkspace -scheme MyAppScheme -sdk iphoneos -configuration Release archive -archivePath ${{ github.workspace }}/build/MyApp.xcarchive
+
+      - name: Export .ipa file
+        run: |
+          xcodebuild -exportArchive -archivePath ${{ github.workspace }}/build/MyApp.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${{ github.workspace }}/build
